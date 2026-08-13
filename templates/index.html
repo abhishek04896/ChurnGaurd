@@ -1,172 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Churn Prediction</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Churn Signal — Customer Retention Reading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #071620;
+    --bg-panel: #0C222D;
+    --card: #10293480;
+    --card-solid: #102934;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.14);
+    --text: #E8F1F1;
+    --text-muted: #7F9DA6;
+    --text-faint: #4E6B73;
+    --accent-safe: #3FDDA0;
+    --accent-watch: #F2B84B;
+    --accent-risk: #FF6B5E;
+    --accent-line: #5FD4E0;
+    --radius: 14px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #0E2A35 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 100%, #0B222B 0%, transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  .page{
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    max-width: 1180px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    padding: 48px 32px 32px 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+  }
+
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--accent-line);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .eyebrow::before{
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent-line);
+    box-shadow: 0 0 0 3px rgba(95,212,224,0.18);
+  }
+
+  .brand-title{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px;
+    line-height: 1.18;
+    font-weight: 600;
+    margin: 18px 0 14px;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-title span{ color: var(--accent-line); }
+
+  .brand-sub{
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0 0 32px;
+    max-width: 30ch;
+  }
+
+  .legend{
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+
+  .legend-title{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+
+  .legend-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 5px 0;
+  }
+
+  .dot{ width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .dot.safe{ background: var(--accent-safe); }
+  .dot.watch{ background: var(--accent-watch); }
+  .dot.risk{ background: var(--accent-risk); }
+
+  .footnote{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-faint);
+    margin-top: 22px;
+    line-height: 1.6;
+  }
+
+  /* ---------- MAIN CONTENT ---------- */
+  .content{ padding: 48px 0 80px 40px; }
+
+  .card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 30px 8px;
+    margin-bottom: 22px;
+    backdrop-filter: blur(6px);
+  }
+
+  .card-head{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .card-num{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .card-title{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 22px;
+  }
+
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 22px;
+  }
+
+  .field{ margin-bottom: 20px; }
+
+  .field label{
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+    font-weight: 500;
+  }
+
+  .field select, .field input{
+    width: 100%;
+    background: #0A1F28;
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 11px 12px;
+    border-radius: 9px;
+    appearance: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  .field select{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237F9DA6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 30px;
+  }
+
+  .field select:focus, .field input:focus{
+    outline: none;
+    border-color: var(--accent-line);
+    box-shadow: 0 0 0 3px rgba(95,212,224,0.15);
+  }
+
+  .field input::placeholder{ color: var(--text-faint); }
+
+  .unit{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-left: 4px;
+  }
+
+  .submit-row{
+    padding: 6px 2px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  button.submit{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #06171F;
+    background: linear-gradient(135deg, var(--accent-line), #8CE8D8);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: transform .15s ease, box-shadow .15s ease;
+    box-shadow: 0 8px 24px -8px rgba(95,212,224,0.45);
+  }
+
+  button.submit:hover{ transform: translateY(-1px); box-shadow: 0 10px 28px -8px rgba(95,212,224,0.6); }
+  button.submit:active{ transform: translateY(0); }
+
+  .submit-hint{
+    font-size: 12.5px;
+    color: var(--text-faint);
+  }
+
+  /* ---------- RESULT / GAUGE ---------- */
+  .result-card{
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--card-solid);
+    padding: 30px 34px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(420px 200px at 0% 0%, var(--glow, rgba(63,221,160,0.12)), transparent 70%);
+    pointer-events: none;
+  }
+
+  .gauge-wrap{ position: relative; }
+
+  .gauge-reading{
+    position: absolute;
+    left: 50%; bottom: 6px;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .gauge-pct{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .gauge-pct-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  .result-body .eyebrow{ margin-bottom: 12px; }
+
+  .result-verdict{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+
+  .result-copy{
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 46ch;
+    margin: 0;
+  }
+
+  .empty-card{
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    padding: 26px 30px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: var(--text-faint);
+    font-size: 13.5px;
+  }
+
+  .empty-icon{
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent-line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+  }
+
+  @media (max-width: 880px){
+    .page{ grid-template-columns: 1fr; }
+    .sidebar{ position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 32px 24px; }
+    .content{ padding: 32px 24px; }
+    .grid{ grid-template-columns: 1fr 1fr; }
+    .result-card{ grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  }
+
+  @media (max-width: 520px){
+    .grid{ grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    button.submit{ transition: none; }
+  }
+</style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">Customer Churn Prediction</h1>
-        <form method="POST" class="mt-4">
-            <div class="row">
-                <!-- First Column -->
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="gender" class="form-label">Gender</label>
-                        <select id="gender" name="gender" class="form-select">
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="SeniorCitizen" class="form-label">Senior Citizen</label>
-                        <select id="SeniorCitizen" name="SeniorCitizen" class="form-select">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Partner" class="form-label">Partner</label>
-                        <select id="Partner" name="Partner" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Dependents" class="form-label">Dependents</label>
-                        <select id="Dependents" name="Dependents" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tenure" class="form-label">Tenure</label>
-                        <input type="number" id="tenure" name="tenure" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="PhoneService" class="form-label">Phone Service</label>
-                        <select id="PhoneService" name="PhoneService" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                </div>
+<div class="page">
 
-                <!-- Second Column -->
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="MultipleLines" class="form-label">Multiple Lines</label>
-                        <select id="MultipleLines" name="MultipleLines" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="No phone service">No phone service</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="InternetService" class="form-label">Internet Service</label>
-                        <select id="InternetService" name="InternetService" class="form-select">
-                            <option value="DSL">DSL</option>
-                            <option value="Fiber optic">Fiber optic</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="OnlineSecurity" class="form-label">Online Security</label>
-                        <select id="OnlineSecurity" name="OnlineSecurity" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="No internet service">No internet service</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="OnlineBackup" class="form-label">Online Backup</label>
-                        <select id="OnlineBackup" name="OnlineBackup" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="No internet service">No internet service</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="DeviceProtection" class="form-label">Device Protection</label>
-                        <select id="DeviceProtection" name="DeviceProtection" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="No internet service">No internet service</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="TechSupport" class="form-label">Tech Support</label>
-                        <select id="TechSupport" name="TechSupport" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="No internet service">No internet service</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Third Column -->
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="StreamingTV" class="form-label">Streaming TV</label>
-                        <select id="StreamingTV" name="StreamingTV" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="No internet service">No internet service</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="StreamingMovies" class="form-label">Streaming Movies</label>
-                        <select id="StreamingMovies" name="StreamingMovies" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="No internet service">No internet service</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Contract" class="form-label">Contract</label>
-                        <select id="Contract" name="Contract" class="form-select">
-                            <option value="Month-to-month">Month-to-month</option>
-                            <option value="One year">One year</option>
-                            <option value="Two year">Two year</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="PaperlessBilling" class="form-label">Paperless Billing</label>
-                        <select id="PaperlessBilling" name="PaperlessBilling" class="form-select">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="PaymentMethod" class="form-label">Payment Method</label>
-                        <select id="PaymentMethod" name="PaymentMethod" class="form-select">
-                            <option value="Electronic check">Electronic check</option>
-                            <option value="Mailed check">Mailed check</option>
-                            <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
-                            <option value="Credit card (automatic)">Credit card (automatic)</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="MonthlyCharges" class="form-label">Monthly Charges</label>
-                        <input type="number" step="0.01" id="MonthlyCharges" name="MonthlyCharges" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="TotalCharges" class="form-label">Total Charges</label>
-                        <input type="number" step="0.01" id="TotalCharges" name="TotalCharges" class="form-control" required>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Predict</button>
-        </form>
-
-        {% if prediction %}
-        <div class="mt-4 text-center">
-            <h3>Prediction: {{ prediction }}</h3>
-            <p>Probability: {{ probability | round(2) }}</p>
-        </div>
-        {% endif %}
+  <aside class="sidebar">
+    <div>
+      <div class="eyebrow">Live model</div>
+      <h1 class="brand-title">Read the signal<br>before they <span>hang up</span>.</h1>
+      <p class="brand-sub">Enter a customer's profile, services and billing details. The model reads it back as a single churn signal.</p>
     </div>
+
+    <div class="legend">
+      <div class="legend-title">Signal key</div>
+      <div class="legend-row"><span class="dot safe"></span> Low risk — likely to stay</div>
+      <div class="legend-row"><span class="dot watch"></span> Watch — mixed signals</div>
+      <div class="legend-row"><span class="dot risk"></span> High risk — likely to churn</div>
+      <div class="footnote">TENURE IN MONTHS · CHARGES IN USD</div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    {% if prediction %}
+    {% set pct = (probability * 100) | round(1) %}
+    {% if pct < 33 %}
+      {% set tone = 'safe' %} {% set tone_color = '#3FDDA0' %} {% set tone_glow = 'rgba(63,221,160,0.14)' %}
+      {% set verdict = 'Steady — this customer looks retained.' %}
+    {% elif pct < 66 %}
+      {% set tone = 'watch' %} {% set tone_color = '#F2B84B' %} {% set tone_glow = 'rgba(242,184,75,0.14)' %}
+      {% set verdict = 'Mixed signal — worth a closer look.' %}
+    {% else %}
+      {% set tone = 'risk' %} {% set tone_color = '#FF6B5E' %} {% set tone_glow = 'rgba(255,107,94,0.16)' %}
+      {% set verdict = 'Weak signal — this customer is at risk.' %}
+    {% endif %}
+    {% set needle_deg = -90 + (pct * 1.8) %}
+
+    <div class="result-card" style="--glow: {{ tone_glow }};">
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 200 120" width="210" height="126">
+          <path d="M20,105 A80,80 0 0,1 74,26" fill="none" stroke="#3FDDA0" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+          <path d="M74,26 A80,80 0 0,1 126,26" fill="none" stroke="#F2B84B" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+          <path d="M126,26 A80,80 0 0,1 180,105" fill="none" stroke="#FF6B5E" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+          <g transform="rotate({{ needle_deg }} 100 105)">
+            <line x1="100" y1="105" x2="100" y2="38" stroke="{{ tone_color }}" stroke-width="3.5" stroke-linecap="round"/>
+          </g>
+          <circle cx="100" cy="105" r="7" fill="{{ tone_color }}"/>
+        </svg>
+        <div class="gauge-reading">
+          <div class="gauge-pct" style="color:{{ tone_color }};">{{ pct }}%</div>
+          <div class="gauge-pct-label">CHURN PROBABILITY</div>
+        </div>
+      </div>
+      <div class="result-body">
+        <div class="eyebrow" style="color:{{ tone_color }};">Reading complete</div>
+        <p class="result-verdict">{{ verdict }}</p>
+        <p class="result-copy">Model output: <strong>{{ prediction }}</strong>. This reading is based on the profile submitted below — adjust any field and re-check to see how the signal shifts.</p>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-card">
+      <div class="empty-icon">?</div>
+      <div>No reading yet. Fill in the profile below and check the signal to see a churn probability here.</div>
+    </div>
+    {% endif %}
+
+    <form method="POST">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Customer profile</h2>
+          <span class="card-num">01</span>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="SeniorCitizen">Senior citizen</label>
+            <select id="SeniorCitizen" name="SeniorCitizen">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="Partner">Partner</label>
+            <select id="Partner" name="Partner">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="Dependents">Dependents</label>
+            <select id="Dependents" name="Dependents">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="tenure">Tenure <span class="unit">months</span></label>
+            <input type="number" id="tenure" name="tenure" placeholder="e.g. 24" required>
+          </div>
+          <div class="field">
+            <label for="PhoneService">Phone service</label>
+            <select id="PhoneService" name="PhoneService">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Services on the line</h2>
+          <span class="card-num">02</span>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="MultipleLines">Multiple lines</label>
+            <select id="MultipleLines" name="MultipleLines">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="No phone service">No phone service</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="InternetService">Internet service</label>
+            <select id="InternetService" name="InternetService">
+              <option value="DSL">DSL</option>
+              <option value="Fiber optic">Fiber optic</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="OnlineSecurity">Online security</label>
+            <select id="OnlineSecurity" name="OnlineSecurity">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="No internet service">No internet service</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="OnlineBackup">Online backup</label>
+            <select id="OnlineBackup" name="OnlineBackup">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="No internet service">No internet service</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="DeviceProtection">Device protection</label>
+            <select id="DeviceProtection" name="DeviceProtection">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="No internet service">No internet service</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="TechSupport">Tech support</label>
+            <select id="TechSupport" name="TechSupport">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="No internet service">No internet service</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="StreamingTV">Streaming TV</label>
+            <select id="StreamingTV" name="StreamingTV">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="No internet service">No internet service</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="StreamingMovies">Streaming movies</label>
+            <select id="StreamingMovies" name="StreamingMovies">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="No internet service">No internet service</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">Account &amp; billing</h2>
+          <span class="card-num">03</span>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="Contract">Contract</label>
+            <select id="Contract" name="Contract">
+              <option value="Month-to-month">Month-to-month</option>
+              <option value="One year">One year</option>
+              <option value="Two year">Two year</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="PaperlessBilling">Paperless billing</label>
+            <select id="PaperlessBilling" name="PaperlessBilling">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="PaymentMethod">Payment method</label>
+            <select id="PaymentMethod" name="PaymentMethod">
+              <option value="Electronic check">Electronic check</option>
+              <option value="Mailed check">Mailed check</option>
+              <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+              <option value="Credit card (automatic)">Credit card (automatic)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="MonthlyCharges">Monthly charges <span class="unit">USD</span></label>
+            <input type="number" step="0.01" id="MonthlyCharges" name="MonthlyCharges" placeholder="e.g. 70.35" required>
+          </div>
+          <div class="field">
+            <label for="TotalCharges">Total charges <span class="unit">USD</span></label>
+            <input type="number" step="0.01" id="TotalCharges" name="TotalCharges" placeholder="e.g. 1680.40" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="submit">Check churn signal</button>
+        <span class="submit-hint">Runs the model on the profile above.</span>
+      </div>
+    </form>
+
+  </main>
+</div>
 </body>
 </html>
