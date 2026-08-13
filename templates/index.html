@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,20 +17,31 @@
 
     <style>
         :root {
-            --bg: #080b12;
-            --surface: #0f141d;
-            --surface-2: #151b26;
-            --surface-3: #1b2330;
-            --border: rgba(255,255,255,0.08);
+            --bg: #070a10;
+            --surface: #0d121b;
+            --surface-2: #141a24;
+            --surface-3: #1a2230;
+
+            --border: rgba(255, 255, 255, 0.075);
+
             --text: #f5f7fb;
-            --muted: #8d98aa;
-            --primary: #7c5cff;
-            --primary-light: #9a83ff;
+            --muted: #8994a6;
+            --muted-light: #aeb8c7;
+
+            --primary: #7957ff;
+            --primary-light: #9c88ff;
             --cyan: #2dd4bf;
+
             --danger: #ff5c7a;
-            --warning: #f7b955;
-            --success: #31d69a;
-            --shadow: 0 25px 70px rgba(0,0,0,0.35);
+            --warning: #f6b94c;
+            --success: #32d69a;
+
+            --shadow:
+                0 30px 80px rgba(0, 0, 0, 0.38);
+
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
         }
 
         * {
@@ -45,11 +57,21 @@
         body {
             font-family: "DM Sans", sans-serif;
             background:
-                radial-gradient(circle at 10% 0%, rgba(124,92,255,0.16), transparent 28%),
-                radial-gradient(circle at 90% 10%, rgba(45,212,191,0.08), transparent 25%),
+                radial-gradient(
+                    circle at 8% 0%,
+                    rgba(121, 87, 255, 0.16),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 92% 8%,
+                    rgba(45, 212, 191, 0.07),
+                    transparent 24%
+                ),
                 var(--bg);
+
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -57,28 +79,56 @@
             position: fixed;
             inset: 0;
             pointer-events: none;
+
             background-image:
-                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, black, transparent 80%);
+                linear-gradient(
+                    rgba(255, 255, 255, 0.014) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.014) 1px,
+                    transparent 1px
+                );
+
+            background-size: 44px 44px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent 85%
+                );
         }
 
+        ::selection {
+            background: rgba(121, 87, 255, 0.35);
+            color: white;
+        }
+
+        /* =========================================================
+           APP
+        ========================================================= */
+
         .app-shell {
-            width: min(1440px, calc(100% - 40px));
+            width: min(1420px, calc(100% - 42px));
             margin: 0 auto;
             padding: 28px 0 60px;
+
             position: relative;
             z-index: 1;
         }
 
-        /* ---------------- HEADER ---------------- */
+        /* =========================================================
+           HEADER
+        ========================================================= */
 
         .topbar {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 34px;
+            justify-content: space-between;
+
+            margin-bottom: 38px;
         }
 
         .brand {
@@ -88,207 +138,348 @@
         }
 
         .brand-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
+            width: 46px;
+            height: 46px;
+
             display: grid;
             place-items: center;
-            background: linear-gradient(135deg, #7c5cff, #4e35d9);
-            box-shadow: 0 10px 35px rgba(124,92,255,0.35);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #896dff,
+                    #5535df
+                );
+
+            box-shadow:
+                0 12px 38px rgba(121, 87, 255, 0.35);
+
+            font-family: "Manrope", sans-serif;
             font-size: 20px;
             font-weight: 800;
+
+            position: relative;
+        }
+
+        .brand-icon::after {
+            content: "";
+
+            position: absolute;
+            inset: 1px;
+
+            border-radius: 13px;
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.18);
         }
 
         .brand h2 {
             font-family: "Manrope", sans-serif;
             font-size: 18px;
             font-weight: 800;
-            letter-spacing: -0.4px;
+
+            letter-spacing: -0.5px;
         }
 
         .brand span {
             display: block;
+
             color: var(--muted);
-            font-size: 12px;
-            margin-top: 2px;
+
+            font-size: 11px;
+
+            margin-top: 3px;
         }
 
         .status-pill {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 9px 13px;
+
+            padding: 9px 14px;
+
             border: 1px solid var(--border);
-            background: rgba(255,255,255,0.035);
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
             border-radius: 999px;
-            color: #cbd3df;
-            font-size: 12px;
+
+            color: #c7cfdb;
+
+            font-size: 11px;
+
+            backdrop-filter: blur(12px);
         }
 
         .status-dot {
             width: 7px;
             height: 7px;
+
             border-radius: 50%;
+
             background: var(--success);
-            box-shadow: 0 0 12px var(--success);
+
+            box-shadow:
+                0 0 0 4px rgba(50, 214, 154, 0.08),
+                0 0 14px rgba(50, 214, 154, 0.75);
+
+            animation: pulse 2s infinite;
         }
 
-        /* ---------------- HERO ---------------- */
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.45;
+            }
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
 
         .hero {
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: #a99aff;
-            font-size: 12px;
+            gap: 9px;
+
+            color: #aa9cff;
+
+            font-size: 11px;
             font-weight: 700;
+
+            letter-spacing: 1.7px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 13px;
+
+            margin-bottom: 14px;
         }
 
         .eyebrow::before {
             content: "";
-            width: 24px;
+
+            width: 25px;
             height: 1px;
-            background: var(--primary);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--cyan)
+                );
         }
 
         .hero h1 {
+            max-width: 900px;
+
             font-family: "Manrope", sans-serif;
-            font-size: clamp(32px, 5vw, 58px);
-            line-height: 1.03;
-            letter-spacing: -2.8px;
-            max-width: 850px;
+
+            font-size:
+                clamp(34px, 5vw, 60px);
+
+            line-height: 1.02;
+
+            letter-spacing: -3px;
         }
 
         .hero h1 span {
-            background: linear-gradient(90deg, #fff, #a899ff, #63dfcc);
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff 0%,
+                    #a796ff 48%,
+                    #67e3d0 100%
+                );
+
             -webkit-background-clip: text;
+            background-clip: text;
+
             color: transparent;
         }
 
         .hero p {
+            max-width: 700px;
+
+            margin-top: 17px;
+
             color: var(--muted);
-            max-width: 690px;
-            line-height: 1.7;
-            margin-top: 15px;
-            font-size: 15px;
+
+            font-size: 14px;
+            line-height: 1.75;
         }
 
-        /* ---------------- LAYOUT ---------------- */
+        /* =========================================================
+           DASHBOARD
+        ========================================================= */
 
         .dashboard {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 330px;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                350px;
+
             gap: 22px;
+
             align-items: start;
         }
 
         .panel {
-            background: rgba(15,20,29,0.82);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16, 22, 32, 0.92),
+                    rgba(10, 14, 22, 0.88)
+                );
+
             border: 1px solid var(--border);
-            border-radius: 24px;
+
+            border-radius: var(--radius-lg);
+
             box-shadow: var(--shadow);
-            backdrop-filter: blur(18px);
+
+            backdrop-filter: blur(20px);
         }
 
         .form-panel {
             padding: 28px;
         }
 
-        /* ---------------- PROGRESS ---------------- */
+        /* =========================================================
+           PROGRESS
+        ========================================================= */
 
         .progress-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            justify-content: space-between;
+
+            margin-bottom: 11px;
         }
 
         .progress-header span {
-            font-size: 12px;
             color: var(--muted);
+            font-size: 11px;
         }
 
         .progress-header strong {
-            color: #d9d3ff;
-            font-size: 12px;
+            color: #c8c0ff;
+            font-size: 11px;
         }
 
         .progress-track {
             width: 100%;
             height: 5px;
-            background: #222a37;
+
+            background: #202733;
+
             border-radius: 999px;
+
             overflow: hidden;
-            margin-bottom: 30px;
+
+            margin-bottom: 32px;
         }
 
         .progress-bar {
-            height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--cyan));
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--cyan)
+                );
+
             border-radius: inherit;
-            transition: width .3s ease;
+
+            transition:
+                width 0.35s ease;
         }
 
-        /* ---------------- SECTION ---------------- */
+        /* =========================================================
+           FORM SECTIONS
+        ========================================================= */
 
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 31px;
         }
 
         .section-heading {
             display: flex;
             align-items: center;
             gap: 12px;
+
             margin-bottom: 18px;
         }
 
         .section-number {
-            width: 30px;
-            height: 30px;
-            border-radius: 10px;
+            width: 31px;
+            height: 31px;
+
             display: grid;
             place-items: center;
-            background: rgba(124,92,255,0.13);
-            border: 1px solid rgba(124,92,255,0.25);
-            color: #a99aff;
-            font-size: 12px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(121, 87, 255, 0.11);
+
+            border:
+                1px solid
+                rgba(121, 87, 255, 0.24);
+
+            color: #aa9cff;
+
+            font-size: 11px;
             font-weight: 800;
         }
 
         .section-heading h3 {
             font-family: "Manrope", sans-serif;
+
             font-size: 15px;
+            font-weight: 800;
         }
 
         .section-heading p {
             color: var(--muted);
-            font-size: 11px;
-            margin-top: 2px;
+
+            font-size: 10px;
+
+            margin-top: 3px;
         }
 
         .fields {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
             gap: 15px;
         }
 
         .field {
-            position: relative;
+            min-width: 0;
         }
 
         .field label {
             display: block;
-            font-size: 11px;
+
+            color: var(--muted-light);
+
+            font-size: 10px;
             font-weight: 600;
-            color: #aeb8c8;
+
             margin-bottom: 7px;
         }
 
@@ -296,105 +487,181 @@
         .field select {
             width: 100%;
             height: 47px;
+
             padding: 0 13px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--surface-2);
+
+            border-radius: var(--radius-sm);
+
+            border:
+                1px solid
+                var(--border);
+
+            background:
+                rgba(20, 26, 36, 0.95);
+
             color: var(--text);
+
             outline: none;
+
             font-family: inherit;
-            font-size: 13px;
-            transition: .2s ease;
+            font-size: 12px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
         }
 
         .field input::placeholder {
-            color: #586273;
+            color: #596477;
         }
 
         .field input:hover,
         .field select:hover {
-            border-color: rgba(124,92,255,0.35);
+            border-color:
+                rgba(121, 87, 255, 0.35);
+
+            background:
+                rgba(24, 31, 43, 0.95);
         }
 
         .field input:focus,
         .field select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(124,92,255,0.12);
+
             background: #171e2a;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(121, 87, 255, 0.11);
         }
 
         .field select {
             appearance: none;
+
             cursor: pointer;
+
             background-image:
-                linear-gradient(45deg, transparent 50%, #8490a3 50%),
-                linear-gradient(135deg, #8490a3 50%, transparent 50%);
+                linear-gradient(
+                    45deg,
+                    transparent 50%,
+                    #8490a3 50%
+                ),
+                linear-gradient(
+                    135deg,
+                    #8490a3 50%,
+                    transparent 50%
+                );
+
             background-position:
                 calc(100% - 17px) 20px,
                 calc(100% - 12px) 20px;
-            background-size: 5px 5px, 5px 5px;
+
+            background-size:
+                5px 5px,
+                5px 5px;
+
             background-repeat: no-repeat;
         }
 
-        .field.full {
-            grid-column: span 3;
-        }
-
-        /* ---------------- BUTTON ---------------- */
+        /* =========================================================
+           BUTTON
+        ========================================================= */
 
         .predict-btn {
             width: 100%;
-            height: 56px;
+            height: 57px;
+
             border: none;
             border-radius: 15px;
-            background: linear-gradient(100deg, #7655ff, #5c3ee8);
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #7957ff,
+                    #5839df
+                );
+
             color: white;
+
             font-family: "Manrope", sans-serif;
+
             font-size: 14px;
             font-weight: 800;
+
             cursor: pointer;
+
             position: relative;
             overflow: hidden;
-            transition: transform .2s ease, box-shadow .2s ease;
-            box-shadow: 0 15px 35px rgba(92,62,232,0.28);
+
+            box-shadow:
+                0 16px 38px
+                rgba(88, 57, 223, 0.28);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                opacity 0.2s ease;
         }
 
-        .predict-btn::after {
+        .predict-btn::before {
             content: "";
+
             position: absolute;
+
             top: 0;
-            left: -100%;
+            left: -110%;
+
             width: 70%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255,255,255,.2),
-                transparent
-            );
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.2),
+                    transparent
+                );
+
             transform: skewX(-20deg);
-            transition: .6s;
+
+            transition:
+                left 0.65s ease;
         }
 
         .predict-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(92,62,232,0.4);
+
+            box-shadow:
+                0 22px 48px
+                rgba(88, 57, 223, 0.38);
         }
 
-        .predict-btn:hover::after {
-            left: 130%;
+        .predict-btn:hover::before {
+            left: 135%;
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
         }
 
         .btn-sub {
             display: block;
-            font-family: "DM Sans", sans-serif;
-            font-size: 10px;
-            font-weight: 500;
-            opacity: .65;
+
             margin-top: 3px;
+
+            font-family: "DM Sans", sans-serif;
+
+            font-size: 9px;
+            font-weight: 500;
+
+            opacity: 0.65;
         }
 
-        /* ---------------- SIDE PANEL ---------------- */
+        /* =========================================================
+           SIDE PANEL
+        ========================================================= */
 
         .side-panel {
             position: sticky;
@@ -407,184 +674,507 @@
 
         .insight-title {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            justify-content: space-between;
+
+            margin-bottom: 18px;
         }
 
         .insight-title h3 {
             font-family: "Manrope", sans-serif;
+
             font-size: 15px;
+            font-weight: 800;
         }
 
         .ai-badge {
-            font-size: 9px;
             padding: 5px 8px;
+
             border-radius: 999px;
-            background: rgba(124,92,255,.13);
-            border: 1px solid rgba(124,92,255,.25);
-            color: #aa9dff;
+
+            background:
+                rgba(121, 87, 255, 0.11);
+
+            border:
+                1px solid
+                rgba(121, 87, 255, 0.22);
+
+            color: #aa9cff;
+
+            font-size: 8px;
             font-weight: 800;
-            letter-spacing: .5px;
+
+            letter-spacing: 0.6px;
         }
 
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
         .empty-state {
-            padding: 28px 5px 10px;
+            padding: 32px 8px 12px;
+
             text-align: center;
         }
 
         .empty-icon {
-            width: 62px;
-            height: 62px;
-            margin: 0 auto 15px;
+            width: 70px;
+            height: 70px;
+
             display: grid;
             place-items: center;
-            border-radius: 19px;
-            background: linear-gradient(
-                135deg,
-                rgba(124,92,255,.16),
-                rgba(45,212,191,.08)
-            );
-            border: 1px solid var(--border);
-            font-size: 25px;
+
+            margin: 0 auto 17px;
+
+            border-radius: 21px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(121,87,255,0.15),
+                    rgba(45,212,191,0.06)
+                );
+
+            border:
+                1px solid var(--border);
+
+            color: #a99bff;
+
+            font-size: 27px;
+
+            box-shadow:
+                0 15px 35px
+                rgba(0,0,0,0.2);
         }
 
         .empty-state h4 {
             font-family: "Manrope", sans-serif;
-            font-size: 14px;
+
+            font-size: 15px;
+
             margin-bottom: 8px;
         }
 
         .empty-state p {
             color: var(--muted);
+
             font-size: 11px;
-            line-height: 1.6;
+
+            line-height: 1.7;
         }
 
-        /* ---------------- RESULT ---------------- */
+        .empty-hint {
+            display: inline-flex;
+
+            margin-top: 18px;
+
+            padding: 7px 10px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            border:
+                1px solid var(--border);
+
+            color: #7f8a9c;
+
+            font-size: 9px;
+        }
+
+        /* =========================================================
+           RESULT
+        ========================================================= */
 
         .result {
-            margin-top: 20px;
-            padding: 22px;
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            background: var(--surface-2);
-            animation: slideUp .45s ease;
+            margin-top: 12px;
+
+            padding: 20px;
+
+            border-radius: 19px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(21, 28, 40, 0.96),
+                    rgba(14, 19, 28, 0.96)
+                );
+
+            border:
+                1px solid var(--border);
+
+            animation:
+                resultIn 0.5s ease;
         }
 
-        @keyframes slideUp {
+        @keyframes resultIn {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(15px) scale(0.98);
             }
+
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
         .result-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
+            display: block;
+
             color: var(--muted);
+
+            font-size: 9px;
             font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.2px;
+
+            margin-bottom: 18px;
         }
 
-        .result-main {
+        /* =========================================================
+           RISK SCORE
+        ========================================================= */
+
+        .risk-score-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .risk-ring {
+            --risk: {{ ((probability|default(0)) * 100)|round(1) }}%;
+
+            width: 106px;
+            height: 106px;
+
+            flex-shrink: 0;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                conic-gradient(
+                    var(--risk-color, var(--danger))
+                    var(--risk),
+                    #252d3a 0
+                );
+
+            position: relative;
+
+            box-shadow:
+                0 12px 35px
+                rgba(0,0,0,0.25);
+        }
+
+        .risk-ring::before {
+            content: "";
+
+            position: absolute;
+
+            width: 82px;
+            height: 82px;
+
+            border-radius: 50%;
+
+            background:
+                #101620;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.05);
+        }
+
+        .risk-ring-content {
+            position: relative;
+
+            z-index: 1;
+
+            text-align: center;
+        }
+
+        .risk-percentage {
+            display: block;
+
+            font-family: "Manrope", sans-serif;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            letter-spacing: -1px;
+        }
+
+        .risk-small-label {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 8px;
+
+            margin-top: 1px;
+        }
+
+        .risk-summary {
+            min-width: 0;
+        }
+
+        .risk-summary h4 {
+            font-family: "Manrope", sans-serif;
+
+            font-size: 20px;
+            font-weight: 800;
+
+            margin-bottom: 5px;
+        }
+
+        .risk-summary p {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.55;
+        }
+
+        /* =========================================================
+           RISK BADGES
+        ========================================================= */
+
+        .risk-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 6px 9px;
+
+            border-radius: 999px;
+
+            font-size: 8px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            margin-top: 9px;
+        }
+
+        .risk-badge.high {
+            color: #ff8ca1;
+
+            background:
+                rgba(255, 92, 122, 0.09);
+
+            border:
+                1px solid
+                rgba(255, 92, 122, 0.16);
+        }
+
+        .risk-badge.medium {
+            color: #f8ca72;
+
+            background:
+                rgba(246, 185, 76, 0.08);
+
+            border:
+                1px solid
+                rgba(246, 185, 76, 0.15);
+        }
+
+        .risk-badge.low {
+            color: #65e3b4;
+
+            background:
+                rgba(50, 214, 154, 0.08);
+
+            border:
+                1px solid
+                rgba(50, 214, 154, 0.15);
+        }
+
+        /* =========================================================
+           PROBABILITY
+        ========================================================= */
+
+        .probability-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            margin: 15px 0 20px;
-        }
 
-        .prediction-text {
-            font-family: "Manrope", sans-serif;
-            font-size: 24px;
-            font-weight: 800;
-        }
-
-        .risk-icon {
-            width: 45px;
-            height: 45px;
-            display: grid;
-            place-items: center;
-            border-radius: 14px;
-            font-size: 20px;
-        }
-
-        .risk-high {
-            color: var(--danger);
-            background: rgba(255,92,122,.1);
-            border: 1px solid rgba(255,92,122,.18);
-        }
-
-        .risk-low {
-            color: var(--success);
-            background: rgba(49,214,154,.1);
-            border: 1px solid rgba(49,214,154,.18);
-        }
-
-        .probability {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--muted);
             margin-bottom: 8px;
         }
 
-        .probability strong {
+        .probability-header span {
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .probability-header strong {
             color: var(--text);
+
+            font-size: 11px;
         }
 
         .risk-track {
+            width: 100%;
             height: 8px;
-            background: #262e3b;
+
+            background: #242c39;
+
             border-radius: 999px;
+
             overflow: hidden;
         }
 
         .risk-fill {
             height: 100%;
-            width: {{ ((probability|default(0)) * 100)|round(1) }}%;
-            background: linear-gradient(90deg, var(--success), var(--warning), var(--danger));
+
+            width:
+                {{ ((probability|default(0)) * 100)|round(1) }}%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--success),
+                    var(--warning),
+                    var(--danger)
+                );
+
             border-radius: inherit;
+
+            transition:
+                width 0.7s ease;
         }
 
-        .recommendation {
+        /* =========================================================
+           DECISION CARD
+        ========================================================= */
+
+        .decision-card {
             margin-top: 20px;
-            padding: 14px;
-            border-radius: 13px;
-            background: rgba(124,92,255,.07);
-            border: 1px solid rgba(124,92,255,.14);
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(121, 87, 255, 0.06);
+
+            border:
+                1px solid
+                rgba(121, 87, 255, 0.13);
         }
 
-        .recommendation strong {
-            display: block;
+        .decision-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 7px;
+        }
+
+        .decision-icon {
+            width: 25px;
+            height: 25px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(121, 87, 255, 0.12);
+
+            color: #a99bff;
+
             font-size: 11px;
-            margin-bottom: 6px;
-            color: #b7adff;
         }
 
-        .recommendation p {
-            color: #9da7b7;
-            font-size: 11px;
-            line-height: 1.55;
-        }
+        .decision-header strong {
+            color: #b8aeff;
 
-        /* ---------------- FOOTER ---------------- */
-
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #505b6c;
             font-size: 10px;
         }
 
-        /* ---------------- RESPONSIVE ---------------- */
+        .decision-card p {
+            color: #939eaf;
+
+            font-size: 10px;
+
+            line-height: 1.65;
+        }
+
+        /* =========================================================
+           MODEL INFO
+        ========================================================= */
+
+        .model-info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+
+            margin-top: 13px;
+        }
+
+        .mini-stat {
+            padding: 10px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(255,255,255,0.018);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.05);
+        }
+
+        .mini-stat span {
+            display: block;
+
+            color: #667285;
+
+            font-size: 8px;
+
+            margin-bottom: 3px;
+        }
+
+        .mini-stat strong {
+            color: #c7cfdb;
+
+            font-size: 10px;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .footer {
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #4e596b;
+
+            font-size: 9px;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
 
         @media (max-width: 1100px) {
+
             .dashboard {
                 grid-template-columns: 1fr;
             }
@@ -594,22 +1184,22 @@
             }
 
             .fields {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .field.full {
-                grid-column: span 2;
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
         }
 
         @media (max-width: 650px) {
+
             .app-shell {
-                width: min(100% - 24px, 1440px);
+                width:
+                    min(100% - 24px, 1420px);
+
                 padding-top: 18px;
             }
 
             .topbar {
-                margin-bottom: 25px;
+                margin-bottom: 28px;
             }
 
             .status-pill {
@@ -617,7 +1207,9 @@
             }
 
             .hero h1 {
-                letter-spacing: -1.5px;
+                font-size: 36px;
+
+                letter-spacing: -1.8px;
             }
 
             .hero p {
@@ -632,12 +1224,42 @@
                 grid-template-columns: 1fr;
             }
 
-            .field.full {
-                grid-column: span 1;
+            .section {
+                margin-bottom: 25px;
             }
 
-            .section {
-                margin-bottom: 24px;
+            .risk-score-area {
+                gap: 14px;
+            }
+
+            .risk-ring {
+                width: 92px;
+                height: 92px;
+            }
+
+            .risk-ring::before {
+                width: 71px;
+                height: 71px;
+            }
+
+            .risk-percentage {
+                font-size: 19px;
+            }
+
+            .risk-summary h4 {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .hero h1 {
+                font-size: 31px;
+            }
+
+            .risk-score-area {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -647,16 +1269,23 @@
 
 <div class="app-shell">
 
-    <!-- HEADER -->
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
     <header class="topbar">
 
         <div class="brand">
-            <div class="brand-icon">C</div>
+
+            <div class="brand-icon">
+                C
+            </div>
 
             <div>
                 <h2>ChurnGuard</h2>
                 <span>Customer Risk Intelligence</span>
             </div>
+
         </div>
 
         <div class="status-pill">
@@ -667,7 +1296,10 @@
     </header>
 
 
-    <!-- HERO -->
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
     <section class="hero">
 
         <div class="eyebrow">
@@ -680,44 +1312,80 @@
         </h1>
 
         <p>
-            Enter a customer's profile and service information to estimate
-            their churn probability using a machine learning prediction model.
-            Turn customer data into actionable retention insights.
+            Analyze customer profile, service and billing information
+            to estimate churn likelihood using a machine learning
+            prediction model and turn customer data into actionable
+            retention decisions.
         </p>
 
     </section>
 
 
-    <!-- MAIN DASHBOARD -->
+    <!-- =========================================================
+         DASHBOARD
+    ========================================================== -->
+
     <div class="dashboard">
 
 
-        <!-- FORM -->
+        <!-- =====================================================
+             FORM PANEL
+        ====================================================== -->
+
         <main class="panel form-panel">
 
+            <!-- Progress -->
+
             <div class="progress-header">
-                <span>Customer profile completion</span>
-                <strong id="progressText">0%</strong>
+
+                <span>
+                    Customer profile completion
+                </span>
+
+                <strong id="progressText">
+                    0%
+                </strong>
+
             </div>
 
             <div class="progress-track">
-                <div class="progress-bar" id="progressBar"></div>
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
             </div>
 
 
-            <form method="POST" id="churnForm">
+            <!-- =================================================
+                 FORM
+            ================================================== -->
+
+            <form
+                method="POST"
+                id="churnForm"
+            >
 
 
-                <!-- CUSTOMER PROFILE -->
+                <!-- =================================================
+                     SECTION 01
+                ================================================== -->
+
                 <section class="section">
 
                     <div class="section-heading">
 
-                        <div class="section-number">01</div>
+                        <div class="section-number">
+                            01
+                        </div>
 
                         <div>
-                            <h3>Customer Profile</h3>
-                            <p>Basic customer information</p>
+                            <h3>
+                                Customer Profile
+                            </h3>
+
+                            <p>
+                                Basic customer information
+                            </p>
                         </div>
 
                     </div>
@@ -726,47 +1394,98 @@
                     <div class="fields">
 
                         <div class="field">
-                            <label for="gender">Gender</label>
 
-                            <select id="gender" name="gender">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
+                            <label for="gender">
+                                Gender
+                            </label>
+
+                            <select
+                                id="gender"
+                                name="gender"
+                            >
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="SeniorCitizen">Senior Citizen</label>
 
-                            <select id="SeniorCitizen" name="SeniorCitizen">
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
+                            <label for="SeniorCitizen">
+                                Senior Citizen
+                            </label>
+
+                            <select
+                                id="SeniorCitizen"
+                                name="SeniorCitizen"
+                            >
+                                <option value="0">
+                                    No
+                                </option>
+
+                                <option value="1">
+                                    Yes
+                                </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="Partner">Partner</label>
 
-                            <select id="Partner" name="Partner">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="Partner">
+                                Partner
+                            </label>
+
+                            <select
+                                id="Partner"
+                                name="Partner"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="Dependents">Dependents</label>
 
-                            <select id="Dependents" name="Dependents">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="Dependents">
+                                Dependents
+                            </label>
+
+                            <select
+                                id="Dependents"
+                                name="Dependents"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="tenure">Tenure (months)</label>
+
+                            <label for="tenure">
+                                Tenure (months)
+                            </label>
 
                             <input
                                 type="number"
@@ -776,16 +1495,29 @@
                                 placeholder="e.g. 24"
                                 required
                             >
+
                         </div>
 
 
                         <div class="field">
-                            <label for="PhoneService">Phone Service</label>
 
-                            <select id="PhoneService" name="PhoneService">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="PhoneService">
+                                Phone Service
+                            </label>
+
+                            <select
+                                id="PhoneService"
+                                name="PhoneService"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
                             </select>
+
                         </div>
 
                     </div>
@@ -793,16 +1525,26 @@
                 </section>
 
 
-                <!-- INTERNET & SERVICES -->
+                <!-- =================================================
+                     SECTION 02
+                ================================================== -->
+
                 <section class="section">
 
                     <div class="section-heading">
 
-                        <div class="section-number">02</div>
+                        <div class="section-number">
+                            02
+                        </div>
 
                         <div>
-                            <h3>Services & Protection</h3>
-                            <p>Internet, security and digital services</p>
+                            <h3>
+                                Services & Protection
+                            </h3>
+
+                            <p>
+                                Internet, security and digital services
+                            </p>
                         </div>
 
                     </div>
@@ -811,104 +1553,210 @@
                     <div class="fields">
 
                         <div class="field">
-                            <label for="MultipleLines">Multiple Lines</label>
 
-                            <select id="MultipleLines" name="MultipleLines">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="MultipleLines">
+                                Multiple Lines
+                            </label>
+
+                            <select
+                                id="MultipleLines"
+                                name="MultipleLines"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
                                 <option value="No phone service">
                                     No phone service
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="InternetService">Internet Service</label>
 
-                            <select id="InternetService" name="InternetService">
-                                <option value="DSL">DSL</option>
-                                <option value="Fiber optic">Fiber optic</option>
-                                <option value="No">No</option>
+                            <label for="InternetService">
+                                Internet Service
+                            </label>
+
+                            <select
+                                id="InternetService"
+                                name="InternetService"
+                            >
+                                <option value="DSL">
+                                    DSL
+                                </option>
+
+                                <option value="Fiber optic">
+                                    Fiber optic
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="OnlineSecurity">Online Security</label>
 
-                            <select id="OnlineSecurity" name="OnlineSecurity">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="OnlineSecurity">
+                                Online Security
+                            </label>
+
+                            <select
+                                id="OnlineSecurity"
+                                name="OnlineSecurity"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
                                 <option value="No internet service">
                                     No internet service
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="OnlineBackup">Online Backup</label>
 
-                            <select id="OnlineBackup" name="OnlineBackup">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="OnlineBackup">
+                                Online Backup
+                            </label>
+
+                            <select
+                                id="OnlineBackup"
+                                name="OnlineBackup"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
                                 <option value="No internet service">
                                     No internet service
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="DeviceProtection">Device Protection</label>
 
-                            <select id="DeviceProtection" name="DeviceProtection">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="DeviceProtection">
+                                Device Protection
+                            </label>
+
+                            <select
+                                id="DeviceProtection"
+                                name="DeviceProtection"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
                                 <option value="No internet service">
                                     No internet service
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="TechSupport">Tech Support</label>
 
-                            <select id="TechSupport" name="TechSupport">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="TechSupport">
+                                Tech Support
+                            </label>
+
+                            <select
+                                id="TechSupport"
+                                name="TechSupport"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
                                 <option value="No internet service">
                                     No internet service
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="StreamingTV">Streaming TV</label>
 
-                            <select id="StreamingTV" name="StreamingTV">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="StreamingTV">
+                                Streaming TV
+                            </label>
+
+                            <select
+                                id="StreamingTV"
+                                name="StreamingTV"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
                                 <option value="No internet service">
                                     No internet service
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
-                            <label for="StreamingMovies">Streaming Movies</label>
 
-                            <select id="StreamingMovies" name="StreamingMovies">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                            <label for="StreamingMovies">
+                                Streaming Movies
+                            </label>
+
+                            <select
+                                id="StreamingMovies"
+                                name="StreamingMovies"
+                            >
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
                                 <option value="No internet service">
                                     No internet service
                                 </option>
                             </select>
+
                         </div>
 
                     </div>
@@ -916,16 +1764,26 @@
                 </section>
 
 
-                <!-- BILLING -->
+                <!-- =================================================
+                     SECTION 03
+                ================================================== -->
+
                 <section class="section">
 
                     <div class="section-heading">
 
-                        <div class="section-number">03</div>
+                        <div class="section-number">
+                            03
+                        </div>
 
                         <div>
-                            <h3>Contract & Billing</h3>
-                            <p>Financial and subscription information</p>
+                            <h3>
+                                Contract & Billing
+                            </h3>
+
+                            <p>
+                                Financial and subscription information
+                            </p>
                         </div>
 
                     </div>
@@ -934,9 +1792,15 @@
                     <div class="fields">
 
                         <div class="field">
-                            <label for="Contract">Contract</label>
 
-                            <select id="Contract" name="Contract">
+                            <label for="Contract">
+                                Contract
+                            </label>
+
+                            <select
+                                id="Contract"
+                                name="Contract"
+                            >
                                 <option value="Month-to-month">
                                     Month-to-month
                                 </option>
@@ -949,10 +1813,12 @@
                                     Two year
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
+
                             <label for="PaperlessBilling">
                                 Paperless Billing
                             </label>
@@ -961,13 +1827,20 @@
                                 id="PaperlessBilling"
                                 name="PaperlessBilling"
                             >
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                                <option value="Yes">
+                                    Yes
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
+
                             <label for="PaymentMethod">
                                 Payment Method
                             </label>
@@ -992,10 +1865,12 @@
                                     Credit card (automatic)
                                 </option>
                             </select>
+
                         </div>
 
 
                         <div class="field">
+
                             <label for="MonthlyCharges">
                                 Monthly Charges
                             </label>
@@ -1008,10 +1883,12 @@
                                 placeholder="e.g. 79.50"
                                 required
                             >
+
                         </div>
 
 
                         <div class="field">
+
                             <label for="TotalCharges">
                                 Total Charges
                             </label>
@@ -1024,6 +1901,7 @@
                                 placeholder="e.g. 1908.00"
                                 required
                             >
+
                         </div>
 
                     </div>
@@ -1031,7 +1909,15 @@
                 </section>
 
 
-                <button type="submit" class="predict-btn">
+                <!-- =================================================
+                     PREDICT BUTTON
+                ================================================== -->
+
+                <button
+                    type="submit"
+                    class="predict-btn"
+                    id="predictButton"
+                >
 
                     Analyze Customer Risk
 
@@ -1046,14 +1932,19 @@
         </main>
 
 
-        <!-- INSIGHTS -->
+        <!-- =====================================================
+             INSIGHTS PANEL
+        ====================================================== -->
+
         <aside class="side-panel">
 
             <div class="panel insight-card">
 
                 <div class="insight-title">
 
-                    <h3>Prediction Insights</h3>
+                    <h3>
+                        Prediction Insights
+                    </h3>
 
                     <span class="ai-badge">
                         ML MODEL
@@ -1064,6 +1955,10 @@
 
                 {% if prediction %}
 
+                    <!-- =================================================
+                         RESULT
+                    ================================================== -->
+
                     <div class="result">
 
                         <span class="result-label">
@@ -1071,43 +1966,92 @@
                         </span>
 
 
-                        <div class="result-main">
+                        <!-- Risk score -->
 
-                            <div>
+                        <div class="risk-score-area">
 
-                                <div class="prediction-text">
-                                    {{ prediction }}
+                            <div
+                                class="risk-ring
+                                {% if probability >= 0.60 %}
+                                    high-ring
+                                {% elif probability >= 0.30 %}
+                                    medium-ring
+                                {% else %}
+                                    low-ring
+                                {% endif %}"
+                            >
+
+                                <div class="risk-ring-content">
+
+                                    <span class="risk-percentage">
+                                        {{ (probability * 100)|round(1) }}%
+                                    </span>
+
+                                    <span class="risk-small-label">
+                                        CHURN
+                                    </span>
+
                                 </div>
 
                             </div>
 
 
-                            <div
-                                class="risk-icon
-                                {% if prediction == 'Churn' %}
-                                    risk-high
+                            <div class="risk-summary">
+
+                                <h4>
+
+                                    {% if probability >= 0.60 %}
+                                        High Risk
+                                    {% elif probability >= 0.30 %}
+                                        Moderate Risk
+                                    {% else %}
+                                        Low Risk
+                                    {% endif %}
+
+                                </h4>
+
+
+                                <p>
+                                    Estimated likelihood that this
+                                    customer will churn.
+                                </p>
+
+
+                                {% if probability >= 0.60 %}
+
+                                    <span class="risk-badge high">
+                                        ● Immediate attention
+                                    </span>
+
+                                {% elif probability >= 0.30 %}
+
+                                    <span class="risk-badge medium">
+                                        ● Monitor customer
+                                    </span>
+
                                 {% else %}
-                                    risk-low
-                                {% endif %}"
-                            >
-                                {% if prediction == 'Churn' %}
-                                    !
-                                {% else %}
-                                    ✓
+
+                                    <span class="risk-badge low">
+                                        ● Healthy outlook
+                                    </span>
+
                                 {% endif %}
+
                             </div>
 
                         </div>
 
 
-                        <div class="probability">
+                        <!-- Model prediction -->
+
+                        <div class="probability-header">
 
                             <span>
-                                Churn probability
+                                Model prediction
                             </span>
 
                             <strong>
-                                {{ (probability * 100)|round(1) }}%
+                                {{ prediction }}
                             </strong>
 
                         </div>
@@ -1115,35 +2059,70 @@
 
                         <div class="risk-track">
 
-                            <div class="risk-fill"></div>
+                            <div
+                                class="risk-fill"
+                                id="riskFill"
+                            ></div>
 
                         </div>
 
 
-                        <div class="recommendation">
+                        <!-- Decision support -->
 
-                            <strong>
-                                {% if prediction == 'Churn' %}
-                                    ⚡ Recommended action
-                                {% else %}
-                                    ✓ Customer outlook
-                                {% endif %}
-                            </strong>
+                        <div class="decision-card">
+
+                            <div class="decision-header">
+
+                                <div class="decision-icon">
+                                    {% if probability >= 0.60 %}
+                                        !
+                                    {% elif probability >= 0.30 %}
+                                        ↗
+                                    {% else %}
+                                        ✓
+                                    {% endif %}
+                                </div>
+
+
+                                <strong>
+
+                                    {% if probability >= 0.60 %}
+                                        Recommended action
+                                    {% elif probability >= 0.30 %}
+                                        Suggested follow-up
+                                    {% else %}
+                                        Customer outlook
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
 
 
                             <p>
 
-                                {% if prediction == 'Churn' %}
+                                {% if probability >= 0.60 %}
 
-                                    This customer shows elevated churn risk.
-                                    Consider proactive retention offers,
-                                    personalized support or contract incentives.
+                                    This customer has an elevated
+                                    predicted churn likelihood.
+                                    Consider proactive retention,
+                                    personalized support or a suitable
+                                    contract incentive.
+
+                                {% elif probability >= 0.30 %}
+
+                                    This customer falls into a moderate
+                                    risk range. Consider monitoring
+                                    engagement and improving the
+                                    customer experience before risk
+                                    increases.
 
                                 {% else %}
 
-                                    The model indicates a relatively lower
-                                    churn risk. Continue engagement and
-                                    maintain the current customer experience.
+                                    The model indicates a relatively
+                                    lower churn likelihood. Continue
+                                    consistent engagement and maintain
+                                    the current customer experience.
 
                                 {% endif %}
 
@@ -1151,9 +2130,54 @@
 
                         </div>
 
+
+                        <!-- Mini stats -->
+
+                        <div class="model-info">
+
+                            <div class="mini-stat">
+
+                                <span>
+                                    MODEL OUTPUT
+                                </span>
+
+                                <strong>
+                                    {{ prediction }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="mini-stat">
+
+                                <span>
+                                    RISK LEVEL
+                                </span>
+
+                                <strong>
+
+                                    {% if probability >= 0.60 %}
+                                        High
+                                    {% elif probability >= 0.30 %}
+                                        Moderate
+                                    {% else %}
+                                        Low
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
+
                 {% else %}
+
+                    <!-- =================================================
+                         EMPTY STATE
+                    ================================================== -->
 
                     <div class="empty-state">
 
@@ -1161,15 +2185,22 @@
                             ✦
                         </div>
 
+
                         <h4>
                             Ready to analyze
                         </h4>
 
+
                         <p>
-                            Complete the customer profile and run the
-                            prediction model to see the estimated churn
-                            probability and recommended action.
+                            Complete the customer profile and run
+                            the prediction model to see the estimated
+                            churn likelihood and recommended action.
                         </p>
+
+
+                        <span class="empty-hint">
+                            Enter customer data to begin
+                        </span>
 
                     </div>
 
@@ -1189,19 +2220,30 @@
 </div>
 
 
+<!-- =============================================================
+     JAVASCRIPT
+============================================================== -->
+
 <script>
 
     /*
-     * Customer profile completion
+     * ------------------------------------------------------------
+     * FORM PROGRESS
+     * ------------------------------------------------------------
      */
 
-    const form = document.getElementById("churnForm");
-    const progressBar = document.getElementById("progressBar");
-    const progressText = document.getElementById("progressText");
+    const form =
+        document.getElementById("churnForm");
 
-    const fields = form.querySelectorAll(
-        "input, select"
-    );
+    const progressBar =
+        document.getElementById("progressBar");
+
+    const progressText =
+        document.getElementById("progressText");
+
+    const fields =
+        form.querySelectorAll("input, select");
+
 
     function updateProgress() {
 
@@ -1218,14 +2260,21 @@
 
         });
 
-        const percentage = Math.round(
-            (completed / fields.length) * 100
-        );
 
-        progressBar.style.width = percentage + "%";
-        progressText.textContent = percentage + "%";
+        const percentage =
+            Math.round(
+                (completed / fields.length) * 100
+            );
+
+
+        progressBar.style.width =
+            percentage + "%";
+
+        progressText.textContent =
+            percentage + "%";
 
     }
+
 
     fields.forEach(field => {
 
@@ -1241,31 +2290,73 @@
 
     });
 
+
     updateProgress();
 
 
     /*
-     * Loading state when prediction is submitted
+     * ------------------------------------------------------------
+     * SUBMIT LOADING STATE
+     * ------------------------------------------------------------
      */
 
-    form.addEventListener("submit", function () {
+    form.addEventListener(
+        "submit",
+        function () {
 
-        const button =
-            document.querySelector(".predict-btn");
+            const button =
+                document.getElementById(
+                    "predictButton"
+                );
 
-        button.innerHTML = `
-            Analyzing customer profile...
-            <span class="btn-sub">
-                Running prediction model
-            </span>
-        `;
 
-        button.style.opacity = "0.8";
-        button.style.pointerEvents = "none";
+            button.innerHTML = `
+                Analyzing customer profile...
+                <span class="btn-sub">
+                    Running prediction model
+                </span>
+            `;
 
-    });
+
+            button.style.opacity = "0.75";
+
+            button.style.pointerEvents =
+                "none";
+
+        }
+    );
+
+
+    /*
+     * ------------------------------------------------------------
+     * RESULT ANIMATION
+     * ------------------------------------------------------------
+     */
+
+    const riskFill =
+        document.getElementById("riskFill");
+
+
+    if (riskFill) {
+
+        const targetWidth =
+            riskFill.style.width;
+
+        riskFill.style.width = "0%";
+
+
+        setTimeout(
+            () => {
+                riskFill.style.width =
+                    targetWidth;
+            },
+            250
+        );
+
+    }
 
 </script>
 
 </body>
 </html>
+```
